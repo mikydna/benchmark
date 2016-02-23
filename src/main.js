@@ -1,4 +1,4 @@
-import Suite from './benchmark/suite';
+import Suite from './suite';
 
 // function flags(argv) {
 //   return _.chain(argv).

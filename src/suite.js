@@ -4,8 +4,8 @@ import Vm from 'vm';
 import _ from 'lodash';
 import Rx from 'rx';
 
-import Benchmark from './benchmark';
-import { Console as DefaultReporter } from '../reporter/console';
+import Benchmark from './benchmark/benchmark';
+import { Console as DefaultReporter } from './reporter/console';
 
 export default class Suite {
 
@@ -27,21 +27,38 @@ export default class Suite {
     };
   }
 
+
+  get running() {
+    return this._state.running;
+  }
+
+  set running(bool) {
+    const newState = this.state;
+    newState.running = bool;
+    this.setState(newState);
+  }
+
+  setState(newState) {
+    this.state = newState;
+    // emit('change', state);
+  }
+
+
   run() {
     const { benchmarks, context } = this.props;
     const { reporter } = this.props;
 
-    // console.log( reporter);
-
+    this.running = true;
     _.forEach(benchmarks, benchmark => {
       const { path, result } = benchmark.run(context);
 
       result.then(
-        e => {
-          reporter.report(e, { path });
-        },
-        err => console.log('err=', err),
-        () => console.log('completed'));
+        out => reporter.write(out, { path }),
+        err => console.log('err =', err),
+        () => {
+          console.log('completed')
+          this.running = false;
+        });
     });
   }
 
