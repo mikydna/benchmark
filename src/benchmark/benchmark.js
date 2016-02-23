@@ -81,7 +81,6 @@ export default class Benchmark {
   run(context) {
     context = _.defaults(context || {}, DEFAULT_CONTEXT);
 
-
     const { path, script } = this.props;
     const sandbox = Vm.createContext(context);
 

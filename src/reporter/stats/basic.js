@@ -9,6 +9,10 @@ const TimeUnit = {
 
 // exp
 TimeUnit.humanize = function({ value, unit }) {
+  if (_.isUndefined(value)) {
+    return null;
+  }
+
   const valueNs = value * unit.ns;
 
   const types = [
@@ -48,8 +52,19 @@ export default class BasicStats {
 
     const len = summary.length;
     const elapsed = _.map(summary, 'elapsed');
+
     const avg = {
       value: Math.floor(_.sum(elapsed) / len),
+      unit: TimeUnit.Nanosecond,
+    };
+
+    const median = {
+      value: _.chain(elapsed).
+        cloneDeep().
+        sort().
+        take(Math.floor(elapsed.length / 2)).
+        first().
+        value(),
       unit: TimeUnit.Nanosecond,
     };
 
@@ -58,6 +73,7 @@ export default class BasicStats {
       summary,
       avg,
       avg_h: TimeUnit.humanize(avg),
+      median_h: TimeUnit.humanize(median),
     };
   }
 
