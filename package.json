@@ -14,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "benchmark": "bin/cli"
+    "benchmark": "bin/cli.js"
   },
   "main": "src/index.js",
   "author": "Andy K <mikydna@gmail.com>",
