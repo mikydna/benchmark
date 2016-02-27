@@ -16,7 +16,7 @@
   "bin": {
     "benchmark": "bin/cli"
   },
-  "main": "lib/main.js",
+  "main": "lib/index.js",
   "author": "Andy K <mikydna@gmail.com>",
   "license": "ISC",
   "jspm": {
