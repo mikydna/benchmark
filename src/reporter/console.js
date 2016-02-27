@@ -10,7 +10,6 @@ export class Console {
     console.log(Chalk.blue('----- console -----'));
     console.log('context >', context);
     console.log('stats > ', stats);
-    // console.log('result > ', results);
     console.log('\n\n');
 
   }

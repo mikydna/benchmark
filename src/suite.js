@@ -22,27 +22,32 @@ export default class Suite {
       reporter: new opts.reporter(),
     };
 
-    this.state = {
+    this._state = {
       running: false,
     };
   }
 
+  get state() {
+    return _.cloneDeep(this._state);
+  }
 
   get running() {
     return this._state.running;
   }
 
   set running(bool) {
-    const newState = this.state;
-    newState.running = bool;
-    this.setState(newState);
+    const current = this.state;
+    if (current.running !== bool) {
+      const newState = current;
+      newState.running = bool;
+      this.setState(newState);
+    }
   }
 
   setState(newState) {
-    this.state = newState;
+    this._state = newState;
     // emit('change', state);
   }
-
 
   run() {
     const { benchmarks, context } = this.props;
@@ -76,7 +81,7 @@ export default class Suite {
           const code = Fs.readFileSync(path);
           const script = new Vm.Script(code);
 
-          return new Benchmark(script, { path });
+          return new Benchmark.Runner(script, { path });
         }).
       toArray().
       map(benchmarks => (new Suite(benchmarks, context))).

@@ -5,23 +5,18 @@ import Rx from 'rx';
 
 import uuid from 'node-uuid';
 
-function event(run, type, data) {
-  const [s, ns] = process.hrtime();
-  const timestamp = (s * 1e+9) + ns;
-  const res = {
-    run,
-    type,
-    timestamp,
-    data,
-  };
 
-  return _.omitBy(res, _.isUndefined);
+
+function xbenchmark(desc) {
+  return new Promise((resolve, reject) => {
+    reject('not running: ' + desc);
+  });
 }
 
 function benchmark(desc, conf, f) {
   conf = _.defaults(conf || {}, {
     n: 2,
-    delay: 500, // time delay between tests
+    delay: 100, // time delay between tests
   });
 
   return Rx.Observable.
@@ -64,12 +59,14 @@ function benchmark(desc, conf, f) {
 
 const DEFAULT_CONTEXT = {
   benchmark,
+  xbenchmark,
+  System,
   console,
   _,
   setTimeout,
 };
 
-export default class Benchmark {
+export class Runner {
 
   constructor(script, { path }) {
     this.props = {
@@ -83,11 +80,20 @@ export default class Benchmark {
 
     const { path, script } = this.props;
     const sandbox = Vm.createContext(context);
+    const runOpts = {
+      displayErrors: true,
+      filename: path,
+    };
 
     return {
       path,
-      result: script.runInNewContext(sandbox),
+      result: script.runInNewContext(sandbox, runOpts),
+      // result: script.runInThisContext(runOpts),
     }
   }
 
 }
+
+export default {
+  Runner,
+};

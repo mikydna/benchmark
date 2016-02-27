@@ -1,80 +1,28 @@
 import _ from 'lodash';
 
-const TimeUnit = {
-  Nanosecond: { ns: 1, abbr: 'ns' },
-  Microsecond: { ns: 10000, abbr: 'μs' },
-  Millisecond: { ns: 1e+6, abbr: 'ms' },
-  Second: { ns: 1e+9, abbr: 's' },
-};
-
-// exp
-TimeUnit.humanize = function({ value, unit }) {
-  if (_.isUndefined(value)) {
-    return null;
-  }
-
-  const valueNs = value * unit.ns;
-
-  const types = [
-    TimeUnit.Second,
-    TimeUnit.Millisecond,
-    TimeUnit.Microsecond,
-    TimeUnit.Nanosecond,
-  ];
-
-  let str = null;
-  const typeLen = types.length;
-  for (let i=0; str === null && i < typeLen; i++) {
-    const { ns, abbr } = types[i];
-    const converted = valueNs / ns;
-
-    if (converted > 1) {
-      str = converted + abbr;
-    }
-  }
-
-  return str;
-
-};
+import { TimeUnit } from '../../util/units';
+import { mean, median } from '../../util/math';
 
 export default class BasicStats {
 
   static compute(trials) {
 
-    const summary = [];
-    _.forEach(trials, (trial, i) => {
+    const summary = _.map(trials, (trial, i) => {
       const start = _.find(trial, e => (e.type === 'start'));
       const end = _.find(trial, e => (e.type === 'end'));
       const elapsed = end.timestamp - start.timestamp;
 
-      summary.push({ i, elapsed });
+      return { i, elapsed };
     });
 
     const len = summary.length;
     const elapsed = _.map(summary, 'elapsed');
 
-    const avg = {
-      value: Math.floor(_.sum(elapsed) / len),
-      unit: TimeUnit.Nanosecond,
-    };
-
-    const median = {
-      value: _.chain(elapsed).
-        cloneDeep().
-        sort().
-        take(Math.floor(elapsed.length / 2)).
-        first().
-        value(),
-      unit: TimeUnit.Nanosecond,
-    };
-
     return {
       trials: len,
       summary,
-      avg,
-      avg_h: TimeUnit.humanize(avg),
-      median_h: TimeUnit.humanize(median),
+      avg_h: TimeUnit.humanize(mean(elapsed), TimeUnit.Nanosecond),
+      median_h: TimeUnit.humanize(median(elapsed), TimeUnit.Nanosecond),
     };
   }
-
 }

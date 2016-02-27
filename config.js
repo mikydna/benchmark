@@ -15,6 +15,7 @@ System.config({
 
   map: {
     "babel": "npm:babel-core@5.8.35",
+    "babel-core": "npm:babel-core@6.5.2",
     "babel-preset-es2015": "npm:babel-preset-es2015@6.5.0",
     "babel-preset-stage-0": "npm:babel-preset-stage-0@6.5.0",
     "babel-runtime": "npm:babel-runtime@5.8.35",
@@ -22,6 +23,8 @@ System.config({
     "core-js": "npm:core-js@1.2.6",
     "fs-extra": "npm:fs-extra@0.26.5",
     "lodash": "npm:lodash@4.5.1",
+    "minimist": "npm:minimist@1.2.0",
+    "module": "github:jspm/nodelibs-module@0.1.0",
     "node-uuid": "npm:node-uuid@1.4.7",
     "rx": "npm:rx@4.0.8",
     "vm": "github:jspm/nodelibs-vm@0.1.0",
@@ -543,7 +546,7 @@ System.config({
       "des.js": "npm:des.js@1.0.0",
       "inherits": "npm:inherits@2.0.1"
     },
-    "npm:browserify-rsa@4.0.0": {
+    "npm:browserify-rsa@4.0.1": {
       "bn.js": "npm:bn.js@4.10.3",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "constants": "github:jspm/nodelibs-constants@0.1.0",
@@ -552,7 +555,7 @@ System.config({
     },
     "npm:browserify-sign@4.0.0": {
       "bn.js": "npm:bn.js@4.10.3",
-      "browserify-rsa": "npm:browserify-rsa@4.0.0",
+      "browserify-rsa": "npm:browserify-rsa@4.0.1",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
       "create-hmac": "npm:create-hmac@1.1.4",
@@ -618,7 +621,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "inherits": "npm:inherits@2.0.1",
       "ripemd160": "npm:ripemd160@1.0.1",
-      "sha.js": "npm:sha.js@2.4.4"
+      "sha.js": "npm:sha.js@2.4.5"
     },
     "npm:create-hmac@1.1.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -843,7 +846,7 @@ System.config({
     },
     "npm:public-encrypt@4.0.0": {
       "bn.js": "npm:bn.js@4.10.3",
-      "browserify-rsa": "npm:browserify-rsa@4.0.0",
+      "browserify-rsa": "npm:browserify-rsa@4.0.1",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
@@ -897,7 +900,7 @@ System.config({
     "npm:rx@4.0.8": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:sha.js@2.4.4": {
+    "npm:sha.js@2.4.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "inherits": "npm:inherits@2.0.1",
