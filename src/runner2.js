@@ -5,7 +5,6 @@ import Babel from 'babel';
 import Path from 'path';
 import Vm from 'vm';
 
-
 const TestCode = `
   import Foo from './foo';
   import Bar, { SuperBar } from './bar';
@@ -103,5 +102,8 @@ Runner.fromString(TestCode).
       console.log('out >>', result);
     }).
   catch(err => console.log(err));
+
+import Foo from 'lib/index';
+console.log('>>>', Foo);
 
 // console.log(global);

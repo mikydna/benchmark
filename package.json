@@ -7,7 +7,7 @@
     "url": "git+https://github.com/mikydna/benchmark.git"
   },
   "scripts": {
-    "build-lib": "rm -rf lib && jspm bundle --minify --skip-source-maps src/index lib/index.js",
+    "build-lib": "rm -rf lib && jspm bundle --inject --minify --skip-source-maps src/index lib/index.js",
     "build-bin": "rm -rf bin && jspm bundle-sfx --minify --skip-source-maps src/bin/cli bin/cli.js",
     "build": "npm run build-lib && npm run build-bin",
     "example": "jspm run src/cli",
@@ -16,7 +16,7 @@
   "bin": {
     "benchmark": "bin/cli"
   },
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "author": "Andy K <mikydna@gmail.com>",
   "license": "ISC",
   "jspm": {
