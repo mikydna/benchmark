@@ -7,7 +7,9 @@
     "url": "git+https://github.com/mikydna/benchmark.git"
   },
   "scripts": {
-    "build": "rm -rf bin && jspm bundle-sfx --minify --skip-source-maps src/bin/cli bin/cli.js",
+    "build-lib": "rm -rf lib && jspm bundle-sfx --minify --skip-source-maps src/index lib/index.js",
+    "build-bin": "rm -rf bin && jspm bundle-sfx --minify --skip-source-maps src/bin/cli bin/cli.js",
+    "build": "npm run build-lib && npm run build-bin",
     "example": "jspm run src/cli",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -28,6 +30,7 @@
       "minimist": "npm:minimist@^1.2.0",
       "module": "github:jspm/nodelibs-module@^0.1.0",
       "node-uuid": "npm:node-uuid@^1.4.7",
+      "path": "github:jspm/nodelibs-path@^0.1.0",
       "rx": "npm:rx@^4.0.8",
       "vm": "github:jspm/nodelibs-vm@^0.1.0"
     },

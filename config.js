@@ -26,6 +26,7 @@ System.config({
     "minimist": "npm:minimist@1.2.0",
     "module": "github:jspm/nodelibs-module@0.1.0",
     "node-uuid": "npm:node-uuid@1.4.7",
+    "path": "github:jspm/nodelibs-path@0.1.0",
     "rx": "npm:rx@4.0.8",
     "vm": "github:jspm/nodelibs-vm@0.1.0",
     "github:jspm/nodelibs-assert@0.1.0": {

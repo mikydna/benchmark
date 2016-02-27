@@ -2,14 +2,16 @@ import _ from 'lodash';
 import Rx from 'rx';
 
 import Babel from 'babel';
+import Path from 'path';
 import Vm from 'vm';
 
+
 const TestCode = `
-  import Foo from './src/foo';
-  import Bar, { SuperBar } from './src/bar';
+  import Foo from './foo';
+  import Bar, { SuperBar } from './bar';
 
   const result = [Foo(), Bar(), SuperBar()];
-  console.log('result', result);
+  console.log(result);
   result;
 `;
 
@@ -37,9 +39,18 @@ export default class Runner {
 
     // extract path-to-module from babel metadata
     const { modules } = metadata;
-    const $registry = Rx.Observable.from(modules.imports).
+    const { imports } = modules;
+
+    const $registry = Rx.Observable.from(imports).
       map(({ source, specifiers }) => {
-          return Rx.Observable.fromPromise(System.import(source)).
+
+          console.log(process.cwd(), System.baseURL, source)
+          const modifiedSourcePath = Path.normalize(System.baseURL + 'src/' + source);
+          console.log(modifiedSourcePath);
+
+          const pSourceImport = System.import(modifiedSourcePath);
+
+          return Rx.Observable.fromPromise(pSourceImport).
             map(module => {
                 const imports = {};
 
@@ -83,9 +94,12 @@ export default class Runner {
 }
 
 console.log('>> ', process.cwd())
+console.time('test');
 Runner.fromString(TestCode).
   then(runner => {
+      console.time('test');
       const result = runner.run();
+      console.timeEnd('test');
       console.log('out >>', result);
     }).
   catch(err => console.log(err));
