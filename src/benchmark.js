@@ -12,6 +12,7 @@ export function xbenchmark(desc) {
 export function benchmark(desc, conf, f) {
   conf = _.defaults(conf || {}, {
     trials: 5,
+    timeout: 1000,
   });
 
   return Rx.Observable.range(0, conf.trials).
@@ -49,7 +50,8 @@ export function benchmark(desc, conf, f) {
               }
 
               return _.noop;
-            });
+            }).
+          timeout(conf.timeout);
 
         return $result.toArray();
 
