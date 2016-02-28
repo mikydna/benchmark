@@ -5,6 +5,7 @@ import { now } from './util/timing';
 export const EventType = Object.freeze({
   Start: 'start',
   End: 'end',
+  Fail: 'fail',
 })
 
 export default class Event {
