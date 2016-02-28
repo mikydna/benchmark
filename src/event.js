@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 import { now } from './util/timing';
 
 export const EventType = Object.freeze({

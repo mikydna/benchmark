@@ -2,20 +2,25 @@
 ### goals
 
 - something headless + cli-driven
-- benchmarks/report like mocha
+- benchmarks/report code structure like mocha
 - prints/outputs various formats for external analysis
-- drives tests until they are stat sig (or not, conf option)
-- output results as a stream (nice, fr) -- i.e., not all or nothing
-- i like(d) calipher, so emulate
+- drives tests until they are stat sig (or not; conf option)
+- (nice-to-have) output results as a stream
+- i like(d) calipher, so investigate / emulate options
+
+-----
 
 ### API
 
 #### `benchmark(desc, opts, body)`
 
-  - `desc string`: human-readable description of a benchmark
-  - `opts object`: benchmark options (`trials` = num trials)
-  - `body function`: runnable code with benchmark operators (`done`, `fail`)
+  - `desc (string)`: human-readable description of a benchmark
+  - `conf (object)`: benchmark conf
+      - `trials` = num trials, default 5
 
+  - `body (function)`: runnable code with benchmark operators
+      - `done`
+      - `fail`
 
 ##### Example
 
