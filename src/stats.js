@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 import { mean, median } from './util/math';
 
-export function basicStats(trials) {
+export function stats(trials) {
   const summary = _.map(trials, trial => {
       const start = _.find(trial, e => (e.type === 'start'));
       const end = _.find(trial, e => (e.type === 'end'));
@@ -24,14 +24,16 @@ export function basicStats(trials) {
   const avg = mean(timings);
   const med = median(timings);
 
-  const stats = {
+  const result = {
     count: {
       total: summary.length,
       succesful: successful.length,
     },
-    avg: _.isNumber(avg) ? Math.floor(avg) : null,
-    median: _.isNumber(med) ? Math.floor(med) : null,
+    timing: _.omit({
+      avg: _.isNumber(avg) ? Math.floor(avg) : null,
+      med: _.isNumber(med) ? Math.floor(med) : null,
+    }, _.isNull),
   };
 
-  return _.omit(stats, _.isNull);
+  return _.omit(result, _.isEmpty);
 }

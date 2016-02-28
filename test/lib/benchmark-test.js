@@ -18,11 +18,11 @@ describe('lib/benchmark', () => {
     it('correctly resolves to an array of benchmark events', done => {
 
       benchmark('successful test', { trials: 2 }, testTimeout100).
-        then(({ context, result }) => {
+        then(({ context, data }) => {
             expect(context.desc).to.be.equal('successful test');
-            expect(result.length).to.be.equal(2);
+            expect(data.length).to.be.equal(2);
 
-            _.forEach(result, trial => {
+            _.forEach(data, trial => {
               const events = _.chain(trial).
                 sortBy(e => (e.timestamp)).
                 value();
@@ -45,11 +45,11 @@ describe('lib/benchmark', () => {
     it('correctly records soft failed events', done => {
 
       benchmark('test with failure', { trials: 3 }, testWithSoftFail).
-        then(({ context, result }) => {
+        then(({ context, data }) => {
             expect(context.desc).to.be.equal('test with failure');
-            expect(result.length).to.be.equal(3);
+            expect(data.length).to.be.equal(3);
 
-            _.forEach(result, trial => {
+            _.forEach(data, trial => {
               const events = _.chain(trial).
                 sortBy(e => (e.timestamp)).
                 value();

@@ -3,10 +3,10 @@ import bluebird from 'bluebird';
 import Rx from 'rx';
 
 import Event, { EventType as Type } from './event';
-import { basicStats } from './stats';
+import { stats } from './stats';
 
 export function xbenchmark(desc) {
-  const message = `Benchmark disabled${desc ? ': ' + desc : '' }`;
+  const message = 'Benchmark disabled' + (desc ? `: ${desc}` : '');
   return bluebird.Promise.reject(new Error(message));
 }
 
@@ -59,13 +59,13 @@ export function benchmark(desc, conf, f) {
       }).
     concatAll().
     toArray().
-    map(result => ({
+    map(trials => ({
         context: {
           desc,
-          trials: conf.trials,
         },
-        stats: basicStats(result),
-        result,
+        stats: stats(trials),
+        data: trials,
       })).
+    tap(res => console.log(res)).
     toPromise(bluebird.Promise);
 }
