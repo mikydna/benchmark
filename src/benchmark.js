@@ -1,68 +1,29 @@
 import _ from 'lodash';
 import Rx from 'rx';
+import bluebird from 'bluebird';
 
-import uuid from 'node-uuid';
+import Event, { EventType as Type } from './event';
 
-import Event, { Type as EventType } from './event';
+export function xbenchmark(desc) {
+  return Promise.reject(`Benchmark disabled: ${desc}`);
+}
 
-const DefaultBenchmarkConf = {
-  n: 1,       // # of runs
-  delay: 500, // ms; delay between runs
-  timeout: 6000,
-};
+export function benchmark(desc, opts, f) {
+  return Rx.Observable.create(obs => {
+        const start = function() {
+          obs.onNext(Event.now(Type.Start));
+        };
 
-export const benchmark = (desc, conf, f) => {
-  conf = _.defaults(conf || {}, DefaultBenchmarkConf);
+        const done = _.once(function() {
+          obs.onNext(Event.now(Type.End));
+          obs.onCompleted();
+        });
 
-  // create a controlled seq of runs
-  const $runs = Rx.Observable.
-    range(0, conf.n).
-    map(() => (uuid())).
-    controlled();
+        start();
+        f(done);
 
-  // when run completes, wait+request another run
-  const $results = $runs.
-    map(runId => {
-        return Rx.Observable.create(
-            obs => {
-              const start = _.once(() => {
-                obs.onNext(Event.now(runId, EventType.Start))
-              });
-
-              const done = _.once(() => {
-                obs.onNext(Event.now(runId, EventType.End));
-                obs.onCompleted();
-              });
-
-              start();
-              f(done);
-            }).
-          timeout(conf.timeout).
-          tapOnCompleted(() => {
-              setTimeout(() => { $runs.request(1) }, conf.delay);
-            });
+        return _.noop;
       }).
-    concatAll();
-
-  // trigger first run
-  $runs.request(1);
-
-  $results.
-    subscribe(
-      e => console.log(e + ''),
-      err => console.log('err', err),
-      () => console.log([ 'completed' ]));
-
+    toArray().
+    toPromise(bluebird);
 }
-
-export const xbenchmark = (desc /*, conf, f */) => {
-  return new Promise((resolve, reject) => {
-    reject('not running: ' + desc);
-  });
-}
-
-export default {
-  benchmark,
-  xbenchmark,
-};
-
