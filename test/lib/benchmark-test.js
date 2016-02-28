@@ -7,13 +7,13 @@ import { benchmark, xbenchmark } from '../../src/benchmark';
 
 describe('lib/benchmark', () => {
   const testTimeout100 = done => setTimeout(done, 100);
+  const testWithUncaughtException = () => { throw new Error('my error'); };
   const testWithSoftFail = (done, { fail }) => {
       fail('soft fail 1', { hard: false });
       done();
     };
-  const testWithUncaughtException = () => { throw new Error('my error'); };
 
-  describe('benchmark', () => {
+  describe('benchmark(desc, conf, f)', () => {
 
     it('correctly resolves to an array of benchmark events', done => {
 
@@ -42,15 +42,6 @@ describe('lib/benchmark', () => {
 
     });
 
-    it('correctly rejects if there an uncaught exception', done => {
-
-      benchmark('test with exception', { trials: 2 }, testWithUncaughtException).
-        catch(err => {
-            expect(err.message).to.have.string('Uncaught exception');
-            done();
-          });
-    });
-
     it('correctly records soft failed events', done => {
 
       benchmark('test with failure', { trials: 3 }, testWithSoftFail).
@@ -71,9 +62,28 @@ describe('lib/benchmark', () => {
         finally(done);
     });
 
+    it('correctly rejects if there an uncaught exception', done => {
+
+      benchmark('test with exception', { trials: 2 }, testWithUncaughtException).
+        catch(err => {
+            expect(err.message).to.have.string('Uncaught exception');
+            done();
+          });
+    });
+
+    it('correctly rejects if there is a timeout', done => {
+
+      benchmark('test with failure', { timeout: 10 }, testTimeout100).
+        catch(err => {
+          expect(err.message).to.have.string('Timeout has occurred');
+          done();
+        });
+
+    });
+
   });
 
-  describe('xbenchmark', () => {
+  describe('xbenchmark(...)', () => {
 
     it('correctly rejects with defined error type', done => {
 
