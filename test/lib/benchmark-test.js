@@ -42,7 +42,7 @@ describe('lib/benchmark', () => {
 
     });
 
-    it('correctly records soft failed events', done => {
+    it('correctly resolves with fail-soft events', done => {
 
       benchmark('test with failure', { trials: 3 }, testWithSoftFail).
         then(({ context, data }) => {

@@ -2,13 +2,13 @@ import _ from 'lodash';
 
 function checkArgument(correct, reason) {
   if (!correct) {
-    const msg = reason ? 'no reason' : reason;
-    throw new Error('Illegal argument: ', msg);
+    const message = ['Illegal argument', reason].join(': ');
+    throw new Error(message);
   }
 }
 
 export function mean(arr) {
-  // checkArgument(_.isArrayLike(arr), 'Must be an array of numbers');
+  checkArgument(_.isArrayLike(arr), 'Must be an array of numbers');
 
   if (_.isEmpty(arr)) return null;
 
@@ -22,7 +22,7 @@ export function mean(arr) {
 }
 
 export function median(arr) {
-  // checkArgument(_.isArrayLike(arr), 'Must be an array of numbers');
+  checkArgument(_.isArrayLike(arr), 'Must be an array of numbers');
 
   if (_.isEmpty(arr)) return null;
 

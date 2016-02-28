@@ -66,6 +66,5 @@ export function benchmark(desc, conf, f) {
         stats: stats(trials),
         data: trials,
       })).
-    tap(res => console.log(res)).
     toPromise(bluebird.Promise);
 }
