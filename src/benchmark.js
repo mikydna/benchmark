@@ -2,8 +2,6 @@ import _ from 'lodash';
 import bluebird from 'bluebird';
 import Rx from 'rx';
 
-
-
 import Event, { EventType as Type } from './event';
 
 export function xbenchmark(desc) {
@@ -13,38 +11,58 @@ export function xbenchmark(desc) {
 }
 
 export function benchmark(desc, conf, f) {
-  return Rx.Observable.create(obs => {
-        const start = function() {
-          obs.onNext(Event.now(Type.Start));
-        };
+  conf = _.defaults(conf || {}, {
+    trials: 5,
+  });
 
-        const done = _.once(function() {
-          obs.onNext(Event.now(Type.End));
-          obs.onCompleted();
-        });
+  return Rx.Observable.range(0, conf.trials).
+    map(run => {
+        const $result =
+          Rx.Observable.create(obs => {
+              const start = () => {
+                obs.onNext(Event.now(run, Type.Start));
+              };
 
-        const fail = function(reason, opts) {
-          opts = _.defaults(opts || {}, {
-            hard: false,
-          });
+              const fail = function(reason, opts) {
+                opts = _.defaults(opts || {}, {
+                  hard: false,
+                });
 
-          obs.onNext(Event.now(Type.Fail));
+                obs.onNext(Event.now(run, Type.Fail));
 
-          if (opts.hard) {
-            obs.onError(new Error(reason));
-          }
-        };
+                if (opts.hard) {
+                  obs.onError(new Error(reason));
+                  obs.onCompleted();
+                }
+              };
 
-        start();
+              const done = () => {
+                obs.onNext(Event.now(run, Type.End));
+                obs.onCompleted();
+              };
 
-        try {
-          f(done, { fail });
-        } catch(err) {
-          fail('Uncaught exception', { hard: true });
-        }
+              start();
 
-        return _.noop;
+              try {
+                f(done, { fail });
+              } catch(err) {
+                fail('Uncaught exception', { hard: true });
+              }
+
+              return _.noop;
+            });
+
+        return $result.toArray();
+
       }).
+    concatAll().
     toArray().
+    map(result => ({
+        context: {
+          desc,
+          trials: conf.trials,
+        },
+        result,
+      })).
     toPromise(bluebird.Promise);
 }

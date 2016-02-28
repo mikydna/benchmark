@@ -36,8 +36,7 @@ export default class Event {
     return `{ ${id}, ${type}, ${timestamp} }`;
   }
 
-  static now(type) {
-    const id = _.uniqueId();
+  static now(id, type) {
     return new Event(id, type, now());
   }
 

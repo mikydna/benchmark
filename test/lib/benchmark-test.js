@@ -17,20 +17,25 @@ describe('lib/benchmark', () => {
 
     it('correctly resolves to an array of benchmark events', done => {
 
-      benchmark('', {}, testTimeout100).
-        then(out => {
-            const events = _.chain(out).
-              sortBy(e => (e.timestamp)).
-              value();
+      benchmark('successful test', { trials: 2 }, testTimeout100).
+        then(({ context, result }) => {
+            expect(context.desc).to.be.equal('successful test');
+            expect(result.length).to.be.equal(2);
 
-            expect(events.length).to.be.equal(2);
-            expect(_.map(events, 'type')).to.be.deep.equal(['start', 'end']);
+            _.forEach(result, trial => {
+              const events = _.chain(trial).
+                sortBy(e => (e.timestamp)).
+                value();
 
-            const first = _.first(events);
-            const last = _.last(events);
-            const elapsed = last.timestamp - first.timestamp;
+              expect(events.length).to.be.equal(2);
+              expect(_.map(events, 'type')).to.be.deep.equal(['start', 'end']);
 
-            expect(elapsed / 1e6).to.be.within(100, 150);
+              const first = _.first(events);
+              const last = _.last(events);
+              const elapsed = last.timestamp - first.timestamp;
+
+              expect(elapsed / 1e6).to.be.within(100, 150);
+            });
 
           }).
         finally(done);
@@ -39,25 +44,28 @@ describe('lib/benchmark', () => {
 
     it('correctly rejects if there an uncaught exception', done => {
 
-      benchmark('', {}, testWithUncaughtException).
-        then(() => { assert.fail(); }).
+      benchmark('test with exception', { trials: 2 }, testWithUncaughtException).
         catch(err => {
             expect(err.message).to.be.equal('Uncaught exception');
-
-          }).
-        finally(done);
-
+            done();
+          });
     });
 
     it('correctly records soft failed events', done => {
-      benchmark('', {}, testWithSoftFail).
-        then(out => {
-            const events = _.chain(out).
-              sortBy(e => (e.timestamp)).
-              value();
 
-            expect(events.length).to.be.equal(3);
-            expect(_.map(events, 'type')).to.be.deep.equal(['start', 'fail', 'end']);
+      benchmark('test with failure', { trials: 3 }, testWithSoftFail).
+        then(({ context, result }) => {
+            expect(context.desc).to.be.equal('test with failure');
+            expect(result.length).to.be.equal(3);
+
+            _.forEach(result, trial => {
+              const events = _.chain(trial).
+                sortBy(e => (e.timestamp)).
+                value();
+
+              expect(events.length).to.be.equal(3);
+              expect(_.map(events, 'type')).to.be.deep.equal(['start', 'fail', 'end']);
+            });
 
           }).
         finally(done);
@@ -67,15 +75,13 @@ describe('lib/benchmark', () => {
 
   describe('xbenchmark', () => {
 
-    it('correctly rejects with well-defined error type', done => {
+    it('correctly rejects with defined error type', done => {
 
       xbenchmark('', {}, testTimeout100).
-        then(() => { assert.fail }).
         catch(err => {
             expect(err.message).to.have.string('Benchmark disabled');
-
-          }).
-        finally(done);
+            done();
+          });
 
     });
 
