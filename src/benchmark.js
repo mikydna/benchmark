@@ -1,6 +1,5 @@
 import _ from 'lodash';
 import Rx from 'rx';
-import bluebird from 'bluebird';
 
 import Event, { EventType as Type } from './event';
 
@@ -25,5 +24,5 @@ export function benchmark(desc, opts, f) {
         return _.noop;
       }).
     toArray().
-    toPromise(bluebird);
+    toPromise();
 }
