@@ -1,1 +1,1 @@
-export { benchmark, xbenchmark } from 'benchmark';
+export { benchmark, xbenchmark } from './benchmark';
