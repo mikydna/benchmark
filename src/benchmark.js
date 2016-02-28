@@ -3,6 +3,7 @@ import bluebird from 'bluebird';
 import Rx from 'rx';
 
 import Event, { EventType as Type } from './event';
+import { basicStats } from './stats';
 
 export function xbenchmark(desc) {
   const message = `Benchmark disabled${desc ? ': ' + desc : '' }`;
@@ -63,6 +64,7 @@ export function benchmark(desc, conf, f) {
           desc,
           trials: conf.trials,
         },
+        stats: basicStats(result),
         result,
       })).
     toPromise(bluebird.Promise);
