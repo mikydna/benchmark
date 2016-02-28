@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { expect, assert } from 'chai';
+import { expect } from 'chai';
 import { describe, it } from 'mocha';
 
 import { benchmark, xbenchmark } from '../../src/benchmark';
@@ -46,7 +46,7 @@ describe('lib/benchmark', () => {
 
       benchmark('test with exception', { trials: 2 }, testWithUncaughtException).
         catch(err => {
-            expect(err.message).to.be.equal('Uncaught exception');
+            expect(err.message).to.have.string('Uncaught exception');
             done();
           });
     });

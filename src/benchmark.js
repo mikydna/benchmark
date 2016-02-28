@@ -6,7 +6,6 @@ import Event, { EventType as Type } from './event';
 
 export function xbenchmark(desc) {
   const message = `Benchmark disabled${desc ? ': ' + desc : '' }`;
-
   return bluebird.Promise.reject(new Error(message));
 }
 
