@@ -2,7 +2,7 @@ import _ from 'lodash';
 import bluebird from 'bluebird';
 import Rx from 'rx';
 
-Rx.config.Promise = bluebird.Promise;
+
 
 import Event, { EventType as Type } from './event';
 
@@ -46,5 +46,5 @@ export function benchmark(desc, conf, f) {
         return _.noop;
       }).
     toArray().
-    toPromise(bluebird);
+    toPromise(bluebird.Promise);
 }
