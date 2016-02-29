@@ -3,7 +3,7 @@ import bluebird from 'bluebird';
 import Rx from 'rx';
 
 import Event, { EventType as Type } from './event';
-import { stats } from './stats';
+import { stats } from './event';
 
 export function xbenchmark(desc) {
   const message = 'Benchmark disabled' + (desc ? `: ${desc}` : '');
@@ -55,14 +55,11 @@ export function benchmark(desc, conf, f) {
           timeout(conf.timeout);
 
         return $result.toArray();
-
       }).
     concatAll().
     toArray().
     map(trials => ({
-        context: {
-          desc,
-        },
+        desc,
         stats: stats(trials),
         data: trials,
       })).

@@ -15,11 +15,11 @@ describe('lib/benchmark', () => {
 
   describe('benchmark(desc, conf, f)', () => {
 
-    it('correctly resolves to an array of benchmark events', done => {
+    it('correctly resolves start and end events', done => {
 
       benchmark('successful test', { trials: 2 }, testTimeout100).
-        then(({ context, data }) => {
-            expect(context.desc).to.be.equal('successful test');
+        then(({ desc, data }) => {
+            expect(desc).to.be.equal('successful test');
             expect(data.length).to.be.equal(2);
 
             _.forEach(data, trial => {
@@ -42,11 +42,11 @@ describe('lib/benchmark', () => {
 
     });
 
-    it('correctly resolves with fail-soft events', done => {
+    it('correctly resolves with (soft) fail events', done => {
 
       benchmark('test with failure', { trials: 3 }, testWithSoftFail).
-        then(({ context, data }) => {
-            expect(context.desc).to.be.equal('test with failure');
+        then(({ desc, data }) => {
+            expect(desc).to.be.equal('test with failure');
             expect(data.length).to.be.equal(3);
 
             _.forEach(data, trial => {
@@ -85,9 +85,9 @@ describe('lib/benchmark', () => {
 
   describe('xbenchmark(...)', () => {
 
-    it('correctly rejects with defined error type', done => {
+    it('correctly rejects with a "disabled error"', done => {
 
-      xbenchmark('', {}, testTimeout100).
+      xbenchmark('disabled test', {}, testTimeout100).
         catch(err => {
             expect(err.message).to.have.string('Benchmark disabled');
             done();
