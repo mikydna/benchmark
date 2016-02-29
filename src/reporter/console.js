@@ -70,7 +70,11 @@ export default class ConsoleReporter {
     };
   }
 
-  report(result) {
+  report(result, opts) {
+    opts = _.defaults(opts || {}, {
+      k: 10,
+    });
+
     const { formatter } = this.props;
     const { desc, stats, data } = result;
 
@@ -96,7 +100,7 @@ export default class ConsoleReporter {
     { // print trial sample
 
       const sample = _.chain(data).
-        sampleSize(10).
+        sampleSize(opts.k).
         sortBy(trial => (trial[0].timestamp)).
         value();
 
@@ -124,14 +128,15 @@ export default class ConsoleReporter {
           const idStr = _.padEnd(start.id, 6);
           const elapsedStr = TimeUnit.humanize(elapsed, TimeUnit.Nanosecond);
           const timelineStr = _.chain(timeline).
-            map(bin => (_.isEmpty(bin) ? '.' :  bin.join('') )).
+            map(bin => (_.isEmpty(bin) ? chalk.gray('.') :  bin.join('') )).
             join('').
             value();
 
           return `${idStr}\t${timelineStr}\t${elapsedStr}`;
         });
 
-        formatter.header('Sample', 2);
+        formatter.header(`Sample (${opts.k})`, 2);
+        formatter.header('Timelines', 3);
         formatter.list(timelines, '');
 
     }
