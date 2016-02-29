@@ -16,6 +16,7 @@ System.config({
     "babel": "npm:babel-core@5.8.35",
     "babel-runtime": "npm:babel-runtime@5.8.35",
     "bluebird": "npm:bluebird@3.3.3",
+    "chalk": "npm:chalk@1.1.1",
     "core-js": "npm:core-js@1.2.6",
     "lodash": "npm:lodash@4.5.1",
     "mocha": "npm:mocha@2.4.5",
@@ -35,6 +36,9 @@ System.config({
     "github:jspm/nodelibs-util@0.1.0": {
       "util": "npm:util@0.10.3"
     },
+    "npm:ansi-styles@2.2.0": {
+      "color-convert": "npm:color-convert@1.0.0"
+    },
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
     },
@@ -52,11 +56,22 @@ System.config({
       "isarray": "npm:isarray@1.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:chalk@1.1.1": {
+      "ansi-styles": "npm:ansi-styles@2.2.0",
+      "escape-string-regexp": "npm:escape-string-regexp@1.0.5",
+      "has-ansi": "npm:has-ansi@2.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "strip-ansi": "npm:strip-ansi@3.0.1",
+      "supports-color": "npm:supports-color@2.0.0"
+    },
     "npm:core-js@1.2.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:has-ansi@2.0.0": {
+      "ansi-regex": "npm:ansi-regex@2.0.0"
     },
     "npm:inherits@2.0.1": {
       "util": "github:jspm/nodelibs-util@0.1.0"
@@ -75,6 +90,12 @@ System.config({
       "assert": "github:jspm/nodelibs-assert@0.1.0"
     },
     "npm:rx@4.0.8": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:strip-ansi@3.0.1": {
+      "ansi-regex": "npm:ansi-regex@2.0.0"
+    },
+    "npm:supports-color@2.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:util@0.10.3": {

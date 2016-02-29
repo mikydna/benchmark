@@ -3,9 +3,9 @@ import _ from 'lodash';
 import { expect } from 'chai';
 import { describe, it } from 'mocha';
 
-import { benchmark, xbenchmark } from '../../src/benchmark';
+import { benchmark, xbenchmark } from '../src/benchmark';
 
-describe('lib/benchmark', () => {
+describe('benchmark', () => {
   const testTimeout100 = done => setTimeout(done, 100);
   const testWithUncaughtException = () => { throw new Error('my error'); };
   const testWithSoftFail = (done, { fail }) => {
