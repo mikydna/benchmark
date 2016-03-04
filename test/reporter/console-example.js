@@ -1,6 +1,4 @@
-import { benchmark } from '../../src/benchmark';
+import { benchmark, ConsoleReporter } from '../../src/index';
 
-import ConsoleReporter from '../../src/reporter/console';
-
-benchmark('does nothing', { trials: 50 }, done => done()).
+benchmark('does nothing', { trials: 20 }, done => setTimeout(done, 100)).
   then(result => new ConsoleReporter().report(result));

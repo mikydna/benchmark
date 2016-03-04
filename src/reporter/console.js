@@ -58,7 +58,7 @@ class Formatter {
 
 }
 
-export default class ConsoleReporter {
+export class ConsoleReporter {
 
   constructor(opts) {
     opts = _.defaults(opts || {}, {
@@ -98,7 +98,6 @@ export default class ConsoleReporter {
     }
 
     { // print trial sample
-
       const sample = _.chain(data).
         sampleSize(opts.k).
         sortBy(trial => (trial[0].timestamp)).
